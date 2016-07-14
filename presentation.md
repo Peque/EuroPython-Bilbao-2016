@@ -377,14 +377,6 @@ if __name__ == '__main__':
 
 # The end
 
-## References
-
-- [osBrain](https://github.com/opensistemas-hub/osbrain)
-- [ØMQ](http://zguide.zeromq.org/)
-- [Pyro4](https://pythonhosted.org/Pyro4/)
-- [PyQtGraph](http://www.pyqtgraph.org/)
-- [Numpy](http://www.numpy.org/)
-
 ## Contact
 
 - [Miguel Sánchez de León Peque](https://www.linkedin.com/in/peque)
@@ -395,6 +387,15 @@ if __name__ == '__main__':
 - [robintradinghub.com](http://robintradinghub.com/)
 - [blog.opensistemas.com](http://blog.opensistemas.com/)
 - [twitter.com/opensistemas](https://twitter.com/opensistemas)
+
+## We are hiring!
+
+- [http://www.opensistemas.com/what-we-do/](http://www.opensistemas.com/what-we-do/)
+
+```python
+hired = [name for name, CV in candidates
+         if CV in inbox('rrhh@opensistemas.com') and CV]
+```
 
 ## Thank you!
 
