@@ -1,6 +1,6 @@
-% Python for developing a real-time automated trading platform
+% DEVELOPING A REAL-TIME AUTOMATED TRADING PLATFORM WITH PYTHON
 % Miguel Sánchez de León Peque
-% 2016-07-17
+% 2016-07-18
 
 # About
 
@@ -187,7 +187,7 @@ Have you met GIL?
 
 ----
 
-![](./figures/not_bad.jpg)
+![](./figures/not_bad.jpg){width=15cm}
 
 ## A basic agent
 
@@ -365,10 +365,21 @@ if __name__ == '__main__':
 
 > ♥ Python ♥
 
+# One last thing...
+
+----
+
+![](./figures/osbrain-logo-name.svg){width=15cm}
+
+- [https://pypi.python.org/pypi/osbrain](https://pypi.python.org/pypi/osbrain)
+- [https://github.com/opensistemas-hub/osbrain](https://github.com/opensistemas-hub/osbrain)
+- [https://pythonhosted.org/osbrain/index.html](http://pythonhosted.org/osbrain/index.html)
+
 # The end
 
 ## References
 
+- [osBrain](https://github.com/opensistemas-hub/osbrain)
 - [ØMQ](http://zguide.zeromq.org/)
 - [Pyro4](https://pythonhosted.org/Pyro4/)
 - [PyQtGraph](http://www.pyqtgraph.org/)
@@ -376,10 +387,10 @@ if __name__ == '__main__':
 
 ## Contact
 
-- [Fernando Monera Daroqui](https://www.linkedin.com/in/monera)
-*fmonera@opensistemas.com*
 - [Miguel Sánchez de León Peque](https://www.linkedin.com/in/peque)
   *msdeleon@opensistemas.com*
+- [Fernando Monera Daroqui](https://www.linkedin.com/in/monera)
+*fmonera@opensistemas.com*
 - [www.opensistemas.com](www.opensistemas.com)
 - [robintradinghub.com](http://robintradinghub.com/)
 - [blog.opensistemas.com](http://blog.opensistemas.com/)
