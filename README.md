@@ -1,6 +1,6 @@
 ![EuroPython logo](https://ep2016.europython.eu/static/p6/images/europython-2016-logo-white-bg.png)
 
-## SUNDAY 13:00–13:45
+## Monday 18 July at 12:00
 # DEVELOPING A REAL-TIME AUTOMATED TRADING PLATFORM WITH PYTHON
 
 ### MIGUEL SÁNCHEZ DE LEÓN PEQUE
