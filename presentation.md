@@ -373,7 +373,7 @@ if __name__ == '__main__':
 
 - [https://pypi.python.org/pypi/osbrain](https://pypi.python.org/pypi/osbrain)
 - [https://github.com/opensistemas-hub/osbrain](https://github.com/opensistemas-hub/osbrain)
-- [https://pythonhosted.org/osbrain/index.html](http://pythonhosted.org/osbrain/index.html)
+- [https://pythonhosted.org/osbrain/](http://pythonhosted.org/osbrain/)
 
 # The end
 
