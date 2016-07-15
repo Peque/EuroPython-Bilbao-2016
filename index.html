@@ -63,7 +63,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
   <div class="reveal">
-<div class='footer'>Open Sistemas de Información Internet S.L. ― <a href="www.opensistemas.com">http://www.opensistemas.com</a></div>
+<div class='footer'>OpenSistemas | <a href="www.opensistemas.com">www.opensistemas.com</a></div>
 <div class='logo'><img src="figures/logo.svg" /></div>
     <div class="slides">
 
@@ -263,24 +263,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <blockquote>
 <p>ØMQ is very cool - If you don't have a project that needs it... ¡create one!</p>
 </blockquote>
-</section><section id="why" class="slide level2">
-<h1>Why?</h1>
-<ul>
-<li>Higher level than raw sockets</li>
-<li>Asynchronous communication</li>
-<li>Multiconnetion (not necessarily one-to-one).</li>
-<li>Multipattern (REQ-REP, PUB-SUB...).</li>
-<li>Multitransport (inproc, ipc, tcp, pgm, epgm).</li>
-<li>Multilanguage (C, C++, Python, Scala, Haskell, Go...).</li>
-<li>Multiplatform.</li>
-<li>Scalable (threads, processes, machines)</li>
-<li>LGPL.</li>
-</ul>
-</section><section class="slide level2">
-
-<figure>
-<img src="./figures/not_bad.jpg" width="566" />
-</figure>
 </section><section id="a-basic-agent" class="slide level2">
 <h1>A basic agent</h1>
 <ul>
@@ -342,25 +324,22 @@ def example_safe(self, x):
 </section></section>
 <section data-background="figures/background.svg"><section id="code-examples" class="titleslide slide level1"><h1>Code examples</h1></section><section id="an-example-i" class="slide level2">
 <h1>An example (I)</h1>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> osbrain <span class="im">import</span> random_nameserver
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> osbrain <span class="im">import</span> run_nameserver
 <span class="im">from</span> osbrain <span class="im">import</span> run_agent
-
-
-<span class="kw">def</span> hello_world(agent):
-    agent.log_info(<span class="st">&#39;Hello world!&#39;</span>)
 
 
 <span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
 
     <span class="co"># System deployment</span>
-    ns <span class="op">=</span> random_nameserver()
-    agent <span class="op">=</span> run_agent(<span class="st">&#39;Agent0&#39;</span>, nsaddr<span class="op">=</span>ns)
+    ns <span class="op">=</span> run_nameserver()
+    agent <span class="op">=</span> run_agent(<span class="st">&#39;Example&#39;</span>, ns)
 
-    <span class="co"># System configuration</span>
-    agent.set_method(iddle<span class="op">=</span>hello_world)</code></pre></div>
+    <span class="co"># Log a message</span>
+    agent.log_info(<span class="st">&#39;Hello world!&#39;</span>)</code></pre></div>
 </section><section id="an-example-ii" class="slide level2">
 <h1>An example (II)</h1>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> osbrain <span class="im">import</span> random_nameserver
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> time
+<span class="im">from</span> osbrain <span class="im">import</span> random_nameserver
 <span class="im">from</span> osbrain <span class="im">import</span> run_agent
 
 
@@ -368,36 +347,36 @@ def example_safe(self, x):
     agent.log_info(<span class="st">&#39;received: </span><span class="sc">%s</span><span class="st">&#39;</span> <span class="op">%</span> message)
 
 
-<span class="kw">def</span> hello_world(agent):
-    agent.log_info(<span class="st">&#39;Sending message...&#39;</span>)
-    agent.send(<span class="st">&#39;push&#39;</span>, <span class="st">&#39;Hello, world!&#39;</span>)
-
-
 <span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
 
     <span class="co"># System deployment</span>
     ns <span class="op">=</span> random_nameserver()
-    pusher <span class="op">=</span> run_agent(<span class="st">&#39;Pusher&#39;</span>, nsaddr<span class="op">=</span>ns)
-    puller <span class="op">=</span> run_agent(<span class="st">&#39;Puller&#39;</span>, nsaddr<span class="op">=</span>ns)
+    sender <span class="op">=</span> run_agent(<span class="st">&#39;Alice&#39;</span>, ns)
+    receiver <span class="op">=</span> run_agent(<span class="st">&#39;Bob&#39;</span>, ns)
 
     <span class="co"># System configuration</span>
-    addr <span class="op">=</span> pusher.bind(<span class="st">&#39;PUSH&#39;</span>, alias<span class="op">=</span><span class="st">&#39;push&#39;</span>)
-    pusher.set_method(iddle<span class="op">=</span>hello_world)
-    puller.<span class="ex">connect</span>(addr, handler<span class="op">=</span>log_message)</code></pre></div>
+    addr <span class="op">=</span> sender.bind(<span class="st">&#39;PUSH&#39;</span>, alias<span class="op">=</span><span class="st">&#39;main&#39;</span>)
+    receiver.<span class="ex">connect</span>(addr, handler<span class="op">=</span>log_message)
+
+    <span class="co"># Send messages</span>
+    <span class="cf">while</span> <span class="va">True</span>:
+        time.sleep(<span class="dv">1</span>)
+        sender.send(<span class="st">&#39;main&#39;</span>, <span class="st">&#39;Hello, world!&#39;</span>)</code></pre></div>
 </section><section id="an-example-iii" class="slide level2">
 <h1>An example (III)</h1>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> osbrain <span class="im">import</span> random_nameserver
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> time
+<span class="im">from</span> osbrain <span class="im">import</span> random_nameserver
 <span class="im">from</span> osbrain <span class="im">import</span> run_agent
 <span class="im">from</span> osbrain <span class="im">import</span> BaseAgent
 
 
 <span class="kw">class</span> Push(BaseAgent):
     <span class="kw">def</span> on_init(<span class="va">self</span>):
-        <span class="va">self</span>.bind(<span class="st">&#39;PUSH&#39;</span>, alias<span class="op">=</span><span class="st">&#39;push&#39;</span>)
+        <span class="va">self</span>.bind(<span class="st">&#39;PUSH&#39;</span>, alias<span class="op">=</span><span class="st">&#39;main&#39;</span>)
 
-    <span class="kw">def</span> iddle(<span class="va">self</span>):
-        <span class="va">self</span>.log_info(<span class="st">&#39;Sending message...&#39;</span>)
-        <span class="va">self</span>.send(<span class="st">&#39;push&#39;</span>, <span class="st">&#39;Hello, world!&#39;</span>)
+    <span class="kw">def</span> hello(<span class="va">self</span>):
+        <span class="va">self</span>.send(<span class="st">&#39;main&#39;</span>, <span class="st">&#39;Hello, world!&#39;</span>)
+
 
 <span class="kw">def</span> log_message(agent, message):
     agent.log_info(<span class="st">&#39;received: </span><span class="sc">%s</span><span class="st">&#39;</span> <span class="op">%</span> message)
@@ -407,11 +386,16 @@ def example_safe(self, x):
 
     <span class="co"># System deployment</span>
     ns <span class="op">=</span> random_nameserver()
-    pusher <span class="op">=</span> run_agent(<span class="st">&#39;Pusher&#39;</span>, nsaddr<span class="op">=</span>ns, base<span class="op">=</span>Push)
-    puller <span class="op">=</span> run_agent(<span class="st">&#39;Puller&#39;</span>, nsaddr<span class="op">=</span>ns)
+    sender <span class="op">=</span> run_agent(<span class="st">&#39;Alice&#39;</span>, ns, base<span class="op">=</span>Push)
+    receiver <span class="op">=</span> run_agent(<span class="st">&#39;Bob&#39;</span>, ns)
 
     <span class="co"># System configuration</span>
-    puller.<span class="ex">connect</span>(pusher.addr(<span class="st">&#39;push&#39;</span>), handler<span class="op">=</span>log_message)</code></pre></div>
+    receiver.<span class="ex">connect</span>(sender.addr(<span class="st">&#39;main&#39;</span>), handler<span class="op">=</span>log_message)
+
+    <span class="co"># Send messages</span>
+    <span class="cf">while</span> <span class="va">True</span>:
+        time.sleep(<span class="dv">1</span>)
+        sender.hello()</code></pre></div>
 </section><section id="an-example-iv" class="slide level2">
 <h1>An example (IV)</h1>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> osmarkets.brain <span class="im">import</span> Brain
