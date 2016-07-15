@@ -173,22 +173,6 @@ Have you met GIL?
 > ØMQ is very cool -
 > If you don't have a project that needs it... ¡create one!
 
-## Why?
-
-- Higher level than raw sockets
-- Asynchronous communication
-- Multiconnetion (not necessarily one-to-one).
-- Multipattern (REQ-REP, PUB-SUB...).
-- Multitransport (inproc, ipc, tcp, pgm, epgm).
-- Multilanguage (C, C++, Python, Scala, Haskell, Go...).
-- Multiplatform.
-- Scalable (threads, processes, machines)
-- LGPL.
-
-----
-
-![](./figures/not_bad.jpg){width=15cm}
-
 ## A basic agent
 
 - Is a system **process**
@@ -248,27 +232,24 @@ def example_safe(self, x):
 ## An example (I)
 
 ```python
-from osbrain import random_nameserver
+from osbrain import run_nameserver
 from osbrain import run_agent
-
-
-def hello_world(agent):
-    agent.log_info('Hello world!')
 
 
 if __name__ == '__main__':
 
     # System deployment
-    ns = random_nameserver()
-    agent = run_agent('Agent0', nsaddr=ns)
+    ns = run_nameserver()
+    agent = run_agent('Example', ns)
 
-    # System configuration
-    agent.set_method(iddle=hello_world)
+    # Log a message
+    agent.log_info('Hello world!')
 ```
 
 ## An example (II)
 
 ```python
+import time
 from osbrain import random_nameserver
 from osbrain import run_agent
 
@@ -277,27 +258,27 @@ def log_message(agent, message):
     agent.log_info('received: %s' % message)
 
 
-def hello_world(agent):
-    agent.log_info('Sending message...')
-    agent.send('push', 'Hello, world!')
-
-
 if __name__ == '__main__':
 
     # System deployment
     ns = random_nameserver()
-    pusher = run_agent('Pusher', nsaddr=ns)
-    puller = run_agent('Puller', nsaddr=ns)
+    sender = run_agent('Alice', ns)
+    receiver = run_agent('Bob', ns)
 
     # System configuration
-    addr = pusher.bind('PUSH', alias='push')
-    pusher.set_method(iddle=hello_world)
-    puller.connect(addr, handler=log_message)
+    addr = sender.bind('PUSH', alias='main')
+    receiver.connect(addr, handler=log_message)
+
+    # Send messages
+    while True:
+        time.sleep(1)
+        sender.send('main', 'Hello, world!')
 ```
 
 ## An example (III)
 
 ```python
+import time
 from osbrain import random_nameserver
 from osbrain import run_agent
 from osbrain import BaseAgent
@@ -305,11 +286,11 @@ from osbrain import BaseAgent
 
 class Push(BaseAgent):
     def on_init(self):
-        self.bind('PUSH', alias='push')
+        self.bind('PUSH', alias='main')
 
-    def iddle(self):
-        self.log_info('Sending message...')
-        self.send('push', 'Hello, world!')
+    def hello(self):
+        self.send('main', 'Hello, world!')
+
 
 def log_message(agent, message):
     agent.log_info('received: %s' % message)
@@ -319,11 +300,16 @@ if __name__ == '__main__':
 
     # System deployment
     ns = random_nameserver()
-    pusher = run_agent('Pusher', nsaddr=ns, base=Push)
-    puller = run_agent('Puller', nsaddr=ns)
+    sender = run_agent('Alice', ns, base=Push)
+    receiver = run_agent('Bob', ns)
 
     # System configuration
-    puller.connect(pusher.addr('push'), handler=log_message)
+    receiver.connect(sender.addr('main'), handler=log_message)
+
+    # Send messages
+    while True:
+        time.sleep(1)
+        sender.hello()
 ```
 
 ## An example (IV)
@@ -377,14 +363,6 @@ if __name__ == '__main__':
 
 # The end
 
-## References
-
-- [osBrain](https://github.com/opensistemas-hub/osbrain)
-- [ØMQ](http://zguide.zeromq.org/)
-- [Pyro4](https://pythonhosted.org/Pyro4/)
-- [PyQtGraph](http://www.pyqtgraph.org/)
-- [Numpy](http://www.numpy.org/)
-
 ## Contact
 
 - [Miguel Sánchez de León Peque](https://www.linkedin.com/in/peque)
@@ -395,6 +373,15 @@ if __name__ == '__main__':
 - [robintradinghub.com](http://robintradinghub.com/)
 - [blog.opensistemas.com](http://blog.opensistemas.com/)
 - [twitter.com/opensistemas](https://twitter.com/opensistemas)
+
+## We are hiring!
+
+- [http://www.opensistemas.com/what-we-do/](http://www.opensistemas.com/what-we-do/)
+
+```python
+hired = [name for name, CV in candidates
+         if CV in inbox('rrhh@opensistemas.com') and CV]
+```
 
 ## Thank you!
 
